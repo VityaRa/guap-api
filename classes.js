@@ -1,8 +1,10 @@
 const fetch = require("node-fetch");
 const cheerio = require("cheerio");
 const express = require("express");
+const cors = require('cors')
 
 const app = express();
+app.use(cors())
 const PORT = process.env.PORT || 80;
 
 const urlToParse = "http://rasp.guap.ru/?g=";
