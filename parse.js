@@ -1,13 +1,21 @@
 const btn = document.querySelector("button");
 const textField = document.querySelector(".info");
 
+function getDay(str) {
+  if (str === '0') return 'Понедельник'
+  if (str === '1') return 'Вторник'
+  if (str === '2') return 'Среда'
+  if (str === '3') return 'Четверг'
+  if (str === '4') return 'Пятница'
+  if (str === '5') return 'Суббота'
+}
+
 btn.addEventListener("click", () => {
   (async function () {
     console.log("started fetching...");
     try {
-      fetch("http://localhost:3000", {
+      fetch("https://vicorp-node-server.herokuapp.com/", {
         method: "GET",
-        mode: "cors",
       })
         .then(response => {
           if (response.status !== 200) {
@@ -20,6 +28,38 @@ btn.addEventListener("click", () => {
           // Examine the text in the response
           response.json().then(data => {
             console.log(data);
+
+            for (key in data) {
+              console.log(key);
+              let ul = document.createElement('ul');
+              let div = document.createElement('div');
+              let header = document.createElement('h2');
+              header.innerHTML = getDay(key) + ': '
+              header.style.fontWeight = 'bold'
+              div.appendChild(header)
+              div.appendChild(ul)
+              document.body.appendChild(div)
+
+              data[key].forEach(lesson => {
+                let li = document.createElement('li');
+                let title = document.createElement('p');
+                let about = document.createElement('p');
+                let place = document.createElement('span');
+                title.innerHTML = `${lesson.index} пара, ${lesson.time} <br>`
+                about.innerHTML = `${lesson.type} - ${lesson.name}`
+                place.innerHTML = `${lesson.corps}; ${lesson.aud}`
+                li.appendChild(title)
+                li.appendChild(about)
+                ul.appendChild(li)
+              })
+
+              document.body.appendChild(ul)
+            }
+
+
+
+
+
           });
         })
         .catch(function (err) {
