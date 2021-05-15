@@ -101,8 +101,9 @@ function getClasses(content) {
         classInfo.corps = place[0].slice(3);
         classInfo.aud = place[1];
       }
-      fetchedInfo[currentDay][fetchedInfo[currentDay].length - 1].info =
-        classInfo;
+      fetchedInfo[currentDay][fetchedInfo[currentDay].length - 1] =
+        {...fetchedInfo[currentDay][fetchedInfo[currentDay].length - 1], ...classInfo}
+
     }
   });
   return fetchedInfo;
