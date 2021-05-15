@@ -30,14 +30,14 @@ btn.addEventListener("click", () => {
             console.log(data);
 
             for (key in data) {
-              console.log(key);
               let ul = document.createElement('ul');
-              let div = document.createElement('div');
               let header = document.createElement('h2');
-              header.innerHTML = getDay(key) + ': '
+              let div = document.createElement('div');
+              header.innerHTML = key + ': '
               header.style.fontWeight = 'bold'
               div.appendChild(header)
               div.appendChild(ul)
+              div.classList.add('day')
               document.body.appendChild(div)
 
               data[key].forEach(lesson => {
