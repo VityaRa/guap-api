@@ -13,11 +13,12 @@ function getDay(str) {
 
 
 const LessonCard = (props) => {
-  return (
+  return (  
     <div className="lesson-card">
       <h3 className="lesson__number">{props.lessonInfo.index}</h3>
+      <h3 className="lesson__time">{props.lessonInfo.time}</h3>
       <h3 className="lesson__title">{props.lessonInfo.name}</h3>
-      <h4 className="lesson__title">{props.lessonInfo.weekType}</h4>
+      <h4 className="lesson__week">{props.lessonInfo.weekType}</h4>
       <div className="lesson__info">
 
       </div>
@@ -66,39 +67,15 @@ btn.addEventListener("click", () => {
 
             console.log(`lessonsInfo: `);
             console.log(data['Понедельник']);
-            //TO DO: REPLACE WITH REACT COMPONENTS
             ReactDOM.render(
               <DayList lessonsInfo={data}></DayList>,
               document.getElementById('content')
             );
 
-            // let ul = document.createElement('ul');
-            // let header = document.createElement('h2');
-            // let div = document.createElement('div');
-            // header.innerHTML = key + ': '
-            // header.style.fontWeight = 'bold'
-            // div.appendChild(header)
-            // div.appendChild(ul)
-            // div.classList.add('day')
-            // document.body.appendChild(div)
-
-            // data[key].forEach(lesson => {
-            //   let li = document.createElement('li');
-            //   let title = document.createElement('p');
-            //   let about = document.createElement('p');
-            //   let place = document.createElement('span');
-            //   title.innerHTML = `${lesson.index} пара, ${lesson.time} <br>`
-            //   about.innerHTML = `${lesson.type} - ${lesson.name}`
-            //   place.innerHTML = `${lesson.corps}; ${lesson.aud}`
-            //   li.appendChild(title)
-            //   li.appendChild(about)
-            //   ul.appendChild(li)
-            // })
-            // document.body.appendChild(ul)
-
           });
         })
         .catch(function (err) {
+          alert('Такой группы нет...')
           console.log("Fetch Error :-S", err);
         });
     } catch (e) {
