@@ -1,113 +1,115 @@
-import _regeneratorRuntime from "babel-runtime/regenerator";
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-var btn = document.querySelector("button");
-var textField = document.querySelector(".info");
+const btn = document.querySelector("button");
 
 function getDay(str) {
-  if (str === '0') return 'Понедельник';
-  if (str === '1') return 'Вторник';
-  if (str === '2') return 'Среда';
-  if (str === '3') return 'Четверг';
-  if (str === '4') return 'Пятница';
-  if (str === '5') return 'Суббота';
+  if (str === '0') return 'Понедельник'
+  if (str === '1') return 'Вторник'
+  if (str === '2') return 'Среда'
+  if (str === '3') return 'Четверг'
+  if (str === '4') return 'Пятница'
+  if (str === '5') return 'Суббота'
 }
 
-var LessonCard = function LessonCard(props) {
-  return React.createElement(
-    "div",
-    { className: "lesson-card" },
-    React.createElement(
-      "h3",
-      { className: "lesson__number" },
-      props.lessonInfo.index
-    ),
-    React.createElement(
-      "h3",
-      { className: "lesson__time" },
-      props.lessonInfo.time
-    ),
-    React.createElement(
-      "h3",
-      { className: "lesson__title" },
-      props.lessonInfo.name
-    ),
-    React.createElement(
-      "h4",
-      { className: "lesson__week" },
-      props.lessonInfo.weekType
-    ),
-    React.createElement("div", { className: "lesson__info" })
-  );
-};
+class BaseComponent {
+  constructor(tag, classList) {
+    this.element = document.createElement(tag)
+    this.element.classList.add(...classList)
+  }
+  
+  remove() {
+    this.element.remove()
+  }
+}
 
-var DayItem = function DayItem(props) {
-  return React.createElement(
-    "div",
-    { className: "lesson-day" },
-    React.createElement(
-      "h2",
-      null,
-      props.title
-    ),
-    props.dayInfo.map(function (lesson) {
-      return React.createElement(LessonCard, { lessonInfo: lesson, key: lesson.index });
+
+
+const rootElement = document.getElementById('content')
+
+class ListItem extends BaseComponent {
+  constructor(lessonInfo) {
+    super('li', ['list-item']);
+    this.element.innerHTML =  `
+      <p className="lesson__number">${lessonInfo.index}</p>
+      <p className="lesson__time">${lessonInfo.time}</p>
+      <p className="lesson__title">${lessonInfo.name}</p>
+      <p className="lesson__week">${lessonInfo.weekType}</p>
+      <div className="lesson__info">
+
+      </div>
+    `
+  }
+}
+
+class DayList extends BaseComponent {
+  constructor(dayName, dayInfo) {
+    super('ul', ['day-list']);
+
+    const title = new BaseComponent('h3', ['day-title'])
+    title.element.innerHTML = dayName
+    this.element.appendChild(title.element)
+
+    dayInfo.forEach(lessonInfo => {
+      this.element.appendChild(new ListItem(lessonInfo).element)
     })
-  );
-};
+  }
+}
 
-var DayList = function DayList(props) {
-  return React.createElement(
-    "div",
-    { className: "lesson-list" },
-    Object.keys(props.lessonsInfo).map(function (dayName) {
-      return React.createElement(DayItem, { key: dayName, dayInfo: props.lessonsInfo[dayName], title: dayName });
-    })
-  );
-};
+//List takes data and contains all day lists
+class List extends BaseComponent {
+  constructor(data) {
+    super('div', ['list']);
+    for (let dayName in data) {
+      this.element.appendChild(new DayList(dayName, data[dayName]).element)
+    }
 
-btn.addEventListener("click", function () {
-  _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee() {
-    return _regeneratorRuntime.wrap(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            console.log("started fetching...");
+  }
+}
 
-            try {
-              fetch("https://vicorp-node-server.herokuapp.com/", {
-                method: "GET"
-              }).then(function (response) {
-                if (response.status !== 200) {
-                  ReactDOM.render(React.createElement(
-                    "h2",
-                    null,
-                    "Error"
-                  ), document.getElementById('content'));
-                  return;
-                }
-                response.json().then(function (data) {
 
-                  console.log("lessonsInfo: ");
-                  console.log(data['Понедельник']);
-                  ReactDOM.render(React.createElement(DayList, { lessonsInfo: data }), document.getElementById('content'));
-                });
-              }).catch(function (err) {
-                alert('Такой группы нет...');
-                console.log("Fetch Error :-S", err);
-              });
-            } catch (e) {
-              console.log("fetch failed...");
-              console.log(e);
-            }
-            console.log("ended fetching...");
+const deletePrev = () => {
+  if (!rootElement.hasChildNodes) return
+  else rootElement.innerHTML = ''
+}
 
-          case 3:
-          case "end":
-            return _context.stop();
-        }
-      }
-    }, _callee, this);
-  }))();
+const addNew = (data) => {
+  const list = new List(data)
+  rootElement.appendChild(list.element)
+}
+
+const render = (data) => {
+  deletePrev()
+  addNew(data)
+}
+
+btn.addEventListener("click", () => {
+  (async function () {
+    console.log("started fetching...");
+
+    try {
+      fetch("https://vicorp-node-server.herokuapp.com/", {
+        method: "GET",
+      })
+        .then(response => {
+          if (response.status !== 200) {
+            alert(`Error: ${response.status}`)
+            return;
+          }
+          response.json().then(data => {
+            console.log(data);
+            render(data)
+
+          });
+        })
+        .catch(function (err) {
+          console.log("Fetch Error :-S", err);
+          alert('Такой группы нет...')
+        });
+    } catch (e) {
+      console.log("fetch failed...");
+      console.log(e);
+    }
+    console.log(`ended fetching...`);
+  })();
 });
+
+
+
