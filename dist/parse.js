@@ -23,19 +23,38 @@ class BaseComponent {
 
 
 const rootElement = document.getElementById('content')
-
+// ▲
+// ▼
 class ListItem extends BaseComponent {
   constructor(lessonInfo) {
     super('li', ['list-item']);
+    console.log(lessonInfo);
     this.element.innerHTML =  `
-      <p className="lesson__number">${lessonInfo.index}</p>
-      <p className="lesson__time">${lessonInfo.time}</p>
-      <p className="lesson__title">${lessonInfo.name}</p>
-      <p className="lesson__week">${lessonInfo.weekType}</p>
-      <div className="lesson__info">
-
+      <div class="day-info">
+        <p class="lesson__type">${lessonInfo.type}</p>
+        ${this.getWeekIcon(lessonInfo)}
+        <p class="lesson__number">${lessonInfo.index}</p>
+      </div>
+     
+      <p class="lesson__time">${lessonInfo.time}</p>
+      <p class="lesson__title">${lessonInfo.name}</p>
+      <div class="lesson__info">
       </div>
     `
+  }
+
+  getWeekIcon(weekInfo) {
+    let weekClass = 'lesson__default'
+    let weekType = ''
+    if (weekInfo.weekType === 'upper') {
+      weekType = '▲'
+      weekClass = 'lesson__week__upper'
+    } 
+    if (weekInfo.weekType === 'bottom') {
+      weekType = '▼'
+      weekClass = 'lesson__week__bottom'
+    } 
+    return `<p class="lesson__week ${weekClass}">${weekType}</p>`
   }
 }
 
@@ -51,6 +70,8 @@ class DayList extends BaseComponent {
       this.element.appendChild(new ListItem(lessonInfo).element)
     })
   }
+
+
 }
 
 //List takes data and contains all day lists
@@ -96,7 +117,7 @@ btn.addEventListener("click", () => {
           response.json().then(data => {
             console.log(data);
             render(data)
-
+            
           });
         })
         .catch(function (err) {

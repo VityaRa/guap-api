@@ -37,8 +37,26 @@
 }
 
 .list {
-  background-color: rgba(255, 0, 0, 0.5);
-  width: 500px;
+  background-color: gray;
+  width: 600px;
+  padding: 10px 40px;
+}
+.list .day-list {
+  background-color: #884242;
+  margin-bottom: 20px;
+}
+
+.day-info {
+  display: flex;
+  justify-content: center;
+}
+
+p.lesson__week__upper {
+  color: red;
+}
+
+p.lesson__week__bottom {
+  color: blue;
 }
 
 /*# sourceMappingURL=style.css.map */
