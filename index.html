@@ -6,6 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="./dist/style.css">
+  <link rel="stylesheet" href="./dist/autocomplete.css">
   <title>Lessons List</title>
 </head>
 
@@ -16,10 +17,13 @@
     </div>
 
     <div class="groups">
-      <form action="">
-        <input type="text">
+      <form autocomplete="off" action="">
+        <div class="autocomplete" style="width:300px;">
+          <input id="myInput" type="text" name="myCountry" placeholder="Country">
+        </div>
       </form>
-      <button>Press me</button>
+      <button class="confirm-btn btn">Найти группу!</button>
+
     </div>
 
     <div id="content">
@@ -31,6 +35,7 @@
 
 
   <script src="./dist/parse.js"></script>
+  <script src="./dist/autocomplete.js"></script>
 
 </body>
 

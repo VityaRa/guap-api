@@ -8,6 +8,7 @@
   color: black;
   font-weight: 400;
   list-style-type: none;
+  font-size: 20px;
 }
 
 .container{
@@ -38,12 +39,14 @@
 }
 
 .list {
-  background-color: gray;
+  background-color: rgba(128, 128, 128, 0.336);
   width: 600px;
   padding: 10px 40px;
+  border-radius: 0.5rem;
   .day-list{
     background-color: rgb(136, 66, 66);
     margin-bottom: 20px;
+    border-radius: 0.5rem;
   }
 }
 
@@ -58,4 +61,18 @@ p.lesson__week__upper{
 
 p.lesson__week__bottom{
   color: blue;
+}
+
+#myInput {
+  text-align: center;
+}
+
+.groups {
+  display: flex;
+  justify-content: center;
+}
+
+.btn {
+  width: 10rem;
+  height: 2.5rem;
 }
